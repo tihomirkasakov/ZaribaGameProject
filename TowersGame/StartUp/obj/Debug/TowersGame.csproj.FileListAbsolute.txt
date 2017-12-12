@@ -1,0 +1,7 @@
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\bin\Debug\StartUp.exe.config
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\bin\Debug\StartUp.exe
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\bin\Debug\StartUp.pdb
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\TowersGame.csprojResolveAssemblyReference.cache
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\TowersGame.csproj.CoreCompileInputs.cache
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\StartUp.exe
+C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\StartUp.pdb
