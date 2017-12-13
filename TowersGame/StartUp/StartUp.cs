@@ -3,7 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
+    using static Floor;
 
     public class StartUp
     {
@@ -12,6 +15,7 @@
         public const int PLAYFIELD_UI = 10;
 
         public static int floorElementsLenght = 11;
+        public static bool isGameOver = false;
 
         static void Main()
         {
@@ -20,29 +24,29 @@
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
             Console.CursorVisible = false;
 
-            Floor floor = new Floor();
+            //Floor floor = new Floor();
             Tower tower = new Tower();
             UI drawUI = new UI();
+            GenerateFloor();
 
-            while (true)
+            while (!isGameOver)
             {
-
-                floor.Move();
-                floor.Draw();
                 tower.Draw();
+                MoveFloor();
+                DrawFloor();
+                //floor.Move();
+                //floor.Draw();
                 drawUI.Draw();
-                floor.InputHandler();
-                floor.DrawFloors();
+                //floor.InputHandler();
+                //floor.DrawFloors();
                 Thread.Sleep(40);
-
-                floor.Delete();
-                floor.DeleteFloors();
+                DeleteFloor();
+                //floor.Delete();
+                //floor.DeleteFloors();
                 drawUI.Delete();
             }
 
-            //maybe we need to add a bool to end the game and enter in the following method:
             GameOverScreen();
-
         }
 
         private static void GameOverScreen()
@@ -188,5 +192,6 @@
                 increaserAndDisplayer++;
             }
         }
+
     }
 }
