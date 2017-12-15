@@ -29,11 +29,8 @@
                 Console.Write("|");
             }
 
-            for (int i = 0; i < this.Elements.Count-2; i++)
-            {
-                Console.SetCursorPosition(Elements[i].X+1, Elements[i].Y);
-                Console.Write(Elements.Count-i-2);
-            }
+                Console.SetCursorPosition(PLAYFIELD_WIDTH+1, PLAYFIELD_HEIGHT - 15);
+                Console.Write($"Score:{score}");
         }
 
         public void Delete()

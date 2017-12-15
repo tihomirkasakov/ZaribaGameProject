@@ -6,18 +6,20 @@
     using System.Text;
     using System.Threading.Tasks;
     using static StartUp;
-    using static Tower;
 
     public class Floor
     {
-        //public List<Vector2> Elements;
         public static int[,] Elements = new int[PLAYFIELD_HEIGHT, PLAYFIELD_WIDTH];
 
         public static bool moveLeft = true;
         public static Random rng = new Random();
         public static int currentRow = 1;
-        public static int startingRow = PLAYFIELD_HEIGHT - 2 - currentRow;
-        //public List<Vector2> TowerElements;
+        public static int startingRow;
+
+        public Floor()
+        {
+
+        }
 
         //public Floor()
         //{
@@ -106,70 +108,80 @@
         //    }
         //}
 
-        //public void InputHandler()
-        //{
-        //    if (Console.KeyAvailable)
-        //    {
-        //        ConsoleKeyInfo userInput = Console.ReadKey();
+        public static void InputHandler()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo userInput = Console.ReadKey();
 
-        //        while (Console.KeyAvailable)
-        //        {
-        //            Console.ReadKey();
-        //        }
+                while (Console.KeyAvailable)
+                {
+                    Console.ReadKey();
+                }
 
-        //        if (userInput.Key == ConsoleKey.Spacebar)
-        //        {
+                if (userInput.Key == ConsoleKey.Spacebar)
+                {
+                    //increase row while tower is lower than 18lvls
+                    int currentLenght = 0;
 
-        //            if (currentRow <= 18)
-        //            {
-        //                for (int i = 0; i < floorElementsLenght; i++)
-        //                {
-        //                    TowerElements.Add(new Vector2(this.Elements[i].X, this.Elements[i].Y));
-        //                }
+                    keyPressed = true;
 
-        //                Elements.Clear();
+                    if (currentRow <= 18)
+                    {
+                        currentRow++;
+                    }
 
-        //                for (int i = 0; i < floorElementsLenght; i++)
-        //                {
-        //                    Elements.Add(new Vector2(this.TowerElements[i].X, this.TowerElements[i].Y - currentRow));
-        //                }
+                    //move floors down
+                    else
+                    {
+                        for (int i = PLAYFIELD_HEIGHT-1; i >= 1; i--)
+                        {
+                            for (int j = 0; j < PLAYFIELD_WIDTH; j++)
+                            {
+                                Elements[i, j] = Elements[i - 1, j];
+                            }
+                        }
 
-        //                currentRow++;
-        //            }
+                    }
 
-        //            else
-        //            {
-        //                TowerElements.RemoveAll(e => e.Y == 47);
+                    //check for right place
+                    for (int i = PLAYFIELD_HEIGHT - 1; i >= PLAYFIELD_HEIGHT - 2 - currentRow; i--)
+                    {
+                        for (int j = 0; j < PLAYFIELD_WIDTH; j++)
+                        {
+                            if ((Elements[i - 1, j] != Elements[i, j] && Elements[i - 1, j] == 1)&&
+                                ((Elements[i - 1, j] != Elements[i, j]-1 && Elements[i - 1, j] == 1)))
+                            {
+                                Elements[i - 1, j] = 0;
+                            }
+                        }
+                    }
 
-        //                for (int i = 0; i < TowerElements.Count; i++)
-        //                {
-        //                    TowerElements[i].Y += 1;
-        //                }
+                    //check lenght for next floor
+                    for (int i = 0; i < PLAYFIELD_WIDTH; i++)
+                    {
+                        if (Elements[PLAYFIELD_HEIGHT-1-currentRow,i]==1)
+                        {
+                            currentLenght++;
+                        }
+                    }
 
-        //                for (int i = 0; i < Elements.Count; i++)
-        //                {
-        //                    Elements[i].Y += 1;
-        //                }
+                    floorElementsLenght = currentLenght;
+                    score += currentLenght;
 
-        //                for (int i = 0; i < floorElementsLenght; i++)
-        //                {
-        //                    TowerElements.Add(new Vector2(this.Elements[i].X, this.Elements[i].Y));
-        //                }
+                    if (currentLenght==0)
+                    {
+                        isGameOver = true;
+                    }
 
-        //                Elements.Clear();
-
-        //                for (int i = 0; i < floorElementsLenght; i++)
-        //                {
-        //                    Elements.Add(new Vector2(this.TowerElements[i].X, this.TowerElements[i].Y - currentRow));
-        //                }
-
-        //            }
-        //        }
-        //    }
-        //}
+                    currentLenght = 0;
+                }
+            }
+        }
 
         public static void GenerateFloor()
         {
+            startingRow = PLAYFIELD_HEIGHT - 2 - currentRow;
             int startingPosition = rng.Next(1, PLAYFIELD_WIDTH - floorElementsLenght - 1);
 
             for (int i = startingPosition; i < startingPosition + floorElementsLenght; i++)
@@ -182,10 +194,13 @@
         {
             if (moveLeft)
             {
+
                 if (Elements[startingRow, 0] == 0)
                 {
+
                     for (int i = 0; i < PLAYFIELD_WIDTH - 1; i++)
                     {
+
                         if (Elements[startingRow, i + 1] == 1)
                         {
                             Elements[startingRow, i] = 1;
@@ -199,6 +214,8 @@
                 else
                 {
                     moveLeft = false;
+                    Elements[startingRow, 0] = 0;
+                    Elements[startingRow, floorElementsLenght] = 1;
                 }
             }
 
@@ -208,6 +225,10 @@
                 {
                     for (int i = PLAYFIELD_WIDTH - 1; i > 0; i--)
                     {
+                        if (i == 1)
+                        {
+                            Elements[startingRow, 0] = 0;
+                        }
                         if (Elements[startingRow, i - 1] == 1)
                         {
                             Elements[startingRow, i] = 1;
@@ -221,6 +242,8 @@
                 else
                 {
                     moveLeft = true;
+                    Elements[startingRow, PLAYFIELD_WIDTH - 1] = 0;
+                    Elements[startingRow, PLAYFIELD_WIDTH - floorElementsLenght - 1] = 1;
                 }
             }
         }
@@ -234,7 +257,16 @@
                     if (Elements[row, col] == 1)
                     {
                         Console.SetCursorPosition(col, row);
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write('@');
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else if (Elements[row, col] == 2)
+                    {
+                        Console.SetCursorPosition(col, row);
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write('%');
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
             }
@@ -251,8 +283,14 @@
                         Console.SetCursorPosition(col, row);
                         Console.Write(' ');
                     }
+                    else if (Elements[row, col] == 2)
+                    {
+                        Console.SetCursorPosition(col, row);
+                        Console.Write(' ');
+                    }
                 }
             }
         }
+
     }
 }

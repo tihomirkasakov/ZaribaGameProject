@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -14,8 +15,10 @@
         public const int PLAYFIELD_WIDTH = 30;
         public const int PLAYFIELD_UI = 10;
 
-        public static int floorElementsLenght = 11;
+        public static int floorElementsLenght = 10;
         public static bool isGameOver = false;
+        public static bool keyPressed = true;
+        public static int score = 0;
 
         static void Main()
         {
@@ -24,29 +27,64 @@
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
             Console.CursorVisible = false;
 
-            //Floor floor = new Floor();
-            Tower tower = new Tower();
             UI drawUI = new UI();
-            GenerateFloor();
+            Floor floor = new Floor();
+
+            LoadLevel(Elements);
 
             while (!isGameOver)
             {
-                tower.Draw();
+                InputHandler();
+                if (keyPressed)
+                {
+                    GenerateFloor();
+                    keyPressed = false;
+                }
+                //tower.Draw();
                 MoveFloor();
                 DrawFloor();
-                //floor.Move();
-                //floor.Draw();
                 drawUI.Draw();
-                //floor.InputHandler();
-                //floor.DrawFloors();
+                ////floor.DrawFloors();
                 Thread.Sleep(40);
                 DeleteFloor();
-                //floor.Delete();
-                //floor.DeleteFloors();
+                //tower.Delete();
                 drawUI.Delete();
             }
 
             GameOverScreen();
+            Thread.Sleep(10000);
+        }
+
+        public static void ClearLastTwoRows()
+        {
+            for (int i = PLAYFIELD_HEIGHT-2; i < PLAYFIELD_HEIGHT; i++)
+            {
+                for (int j = 0; j < PLAYFIELD_WIDTH; j++)
+                {
+                    Console.SetCursorPosition(j, i);
+                    Console.Write(' ');
+            }
+            }
+        }
+
+        public static void LoadLevel(int[,] elements)
+        {
+            string[] input = File.ReadAllLines("level.txt");
+
+            for (int row = 0; row < input.Length; row++)
+            {
+                for (int symbol = 0; symbol < input[row].Length; symbol++)
+                {
+                    if (int.Parse(input[row][symbol].ToString()) != 0)
+                    {
+                        Elements[row, symbol] = int.Parse(input[row][symbol].ToString());
+                    }
+                    else
+                    {
+                        Elements[row, symbol] = 0;
+                    }
+                }
+            }
         }
 
         private static void GameOverScreen()
@@ -164,16 +202,15 @@
                             Console.SetCursorPosition(widthLettersDisplay, heightLettersDisplay);
                             Console.Write(alphabet[currentLetter]);
                         }
-
                     }
                 }
             }
 
             //we need a score integer, for now I will just input a random score int to test it
-            int score = 20;
+            int hiScore = score;
 
             //adding the current letters and score to the scoreboard
-            scoreboard[score] = currentLetterCombination;
+            scoreboard[hiScore] = currentLetterCombination;
 
             //displaying the score in the UI
             int scoreUIwidthDisplay = 30;

@@ -5,3 +5,10 @@ C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\De
 C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\TowersGame.csproj.CoreCompileInputs.cache
 C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\StartUp.exe
 C:\Users\Tihomir\Documents\Visual Studio 2017\Projects\TowersGame\StartUp\obj\Debug\StartUp.pdb
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\bin\Debug\StartUp.exe.config
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\bin\Debug\StartUp.exe
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\bin\Debug\StartUp.pdb
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\obj\Debug\TowersGame.csprojResolveAssemblyReference.cache
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\obj\Debug\TowersGame.csproj.CoreCompileInputs.cache
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\obj\Debug\StartUp.exe
+N:\GitHub\ZaribaGameProject\TowersGame\StartUp\obj\Debug\StartUp.pdb
