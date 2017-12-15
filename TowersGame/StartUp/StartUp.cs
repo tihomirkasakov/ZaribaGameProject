@@ -28,8 +28,6 @@
             Console.CursorVisible = false;
 
             UI drawUI = new UI();
-            Floor floor = new Floor();
-
             LoadLevel(Elements);
 
             while (!isGameOver)
@@ -40,17 +38,15 @@
                     GenerateFloor();
                     keyPressed = false;
                 }
-                //tower.Draw();
                 MoveFloor();
                 DrawFloor();
                 drawUI.Draw();
-                ////floor.DrawFloors();
+
                 Thread.Sleep(40);
+
                 DeleteFloor();
-                //tower.Delete();
                 drawUI.Delete();
             }
-
             GameOverScreen();
             Thread.Sleep(10000);
         }
