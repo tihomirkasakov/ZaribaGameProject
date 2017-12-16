@@ -13,22 +13,47 @@
     {
         public const int PLAYFIELD_HEIGHT = 50;
         public const int PLAYFIELD_WIDTH = 30;
-        public const int PLAYFIELD_UI = 10;
+        public const int PLAYFIELD_UI = 17;
 
         public static int floorElementsLenght = 10;
         public static bool isGameOver = false;
         public static bool keyPressed = true;
         public static int score = 0;
 
+        public enum Difficulty
+        {
+            Easy,
+            Medium,
+            Hard
+        }
+
+        public static Difficulty difficulty;
+
+        /* dictionary to hold:  
+        * key      -> int, the score
+        * value    -> string, the name (consisting of three letters) (for now just AAA)
+        * */
+        public static Dictionary<int, string> leaderboard = new Dictionary<int, string>();
+
         static void Main()
         {
-
             Console.BufferHeight = Console.WindowHeight = PLAYFIELD_HEIGHT;
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
             Console.CursorVisible = false;
 
+            //fill the dictionary up with 9 scores, all names AAA
+            for (int i = 1; i < 10; i++)
+            {
+                leaderboard[i] = "AAA";
+            }
+
+            ChooseDifficultyScreen();
+
             UI drawUI = new UI();
             LoadLevel(Elements);
+
+            //there is no need to put the Draw method in the while cycle, just update it
+            drawUI.Draw(score, leaderboard, difficulty);
 
             while (!isGameOver)
             {
@@ -40,26 +65,114 @@
                 }
                 MoveFloor();
                 DrawFloor();
-                drawUI.Draw();
 
                 Thread.Sleep(40);
 
                 DeleteFloor();
-                drawUI.Delete();
+                drawUI.UpdateUI(score, difficulty);
             }
             GameOverScreen();
             Thread.Sleep(10000);
         }
 
+        private static void ChooseDifficultyScreen()
+        {
+            int displayDifficultyWidth = 10;
+            int displayDifficultyHeight = 20;
+
+            Console.SetCursorPosition(displayDifficultyWidth, displayDifficultyHeight);
+            Console.Write("Please select difficulty: ");
+
+            Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 2);
+            Console.Write(Difficulty.Easy);
+
+            Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 3);
+            Console.Write(Difficulty.Medium);
+
+            Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 4);
+            Console.Write(Difficulty.Hard);
+
+            int selectorHeight = 22;
+            Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
+            Console.Write(">");
+
+            bool isDifficultySeleted = false;
+
+            while (!isDifficultySeleted)
+            {
+                if (Console.KeyAvailable)
+                {
+                    //the following line is used because otherwise it eats up letters, idk why, 
+                    //kind of a feature, not a bug :D
+                    Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight + 5);
+
+                    ConsoleKeyInfo userInput = Console.ReadKey();
+
+                    while (Console.KeyAvailable)
+                    {
+                        Console.ReadKey();
+                    }
+
+                    if (userInput.Key == ConsoleKey.UpArrow)
+                    {
+                        if (selectorHeight == 22)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
+                            Console.Write(" ");
+                            selectorHeight--;
+                            Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
+                            Console.Write(">");
+                        }
+                    }
+                    else if (userInput.Key == ConsoleKey.DownArrow)
+                    {
+                        if (selectorHeight == 24)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
+                            Console.Write(" ");
+                            selectorHeight++;
+                            Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
+                            Console.Write(">");
+                        }
+                    }
+                    else if (userInput.Key == ConsoleKey.Enter)
+                    {
+                        isDifficultySeleted = true;
+                        Console.Clear();
+                        if (selectorHeight == 22)
+                        {
+                            difficulty = Difficulty.Easy;
+                        }
+                        else if (selectorHeight == 23)
+                        {
+                            difficulty = Difficulty.Medium;
+                        }
+                        else if (selectorHeight == 24)
+                        {
+                            difficulty = Difficulty.Hard;
+                        }
+                    }
+                }
+            }
+        }
+
         public static void ClearLastTwoRows()
         {
-            for (int i = PLAYFIELD_HEIGHT-2; i < PLAYFIELD_HEIGHT; i++)
+            for (int i = PLAYFIELD_HEIGHT - 2; i < PLAYFIELD_HEIGHT; i++)
             {
                 for (int j = 0; j < PLAYFIELD_WIDTH; j++)
                 {
                     Console.SetCursorPosition(j, i);
                     Console.Write(' ');
-            }
+                }
             }
         }
 
@@ -101,36 +214,24 @@
                 counter++;
             }
 
-            /* dictionary to hold:  
-             * key      -> int, the score
-             * value    -> string, the name (consisting of three letters) (for now just AAA)
-             * */
-            Dictionary<int, string> scoreboard = new Dictionary<int, string>();
-
             //and we need a string to keep the current combination of letters
             string currentLetterCombination = string.Empty;
-
-            //fill the dictionary up
-            for (int i = 1; i < 10; i++)
-            {
-                scoreboard[i] = "AAA";
-            }
 
             //clear the screen to display the game over screen
             Console.Clear();
 
             //placing the cursor in the middle of the field
-            int widthMessageDisplay = 1;
+            int widthMessageDisplay = 0;
             int heightMessageDisplay = 16;
             Console.SetCursorPosition(widthMessageDisplay, heightMessageDisplay);
 
             //asking the user to input his name:
-            Console.Write("Great job, man! Now enter your name by    pressing Up, Down and Enter on the                desired letter!");
+            Console.Write("\tGreat job, man! \n\tNow enter your name by    \n\tpressing Up, Down and Enter \n\ton the desired letter!");
             //^ maybe the text needs to be readjusted to appear better
 
             //moving the cursor position
             int widthLettersDisplay = 18;
-            int heightLettersDisplay = 20;
+            int heightLettersDisplay = 25;
             Console.SetCursorPosition(widthLettersDisplay, heightLettersDisplay);
 
             //showing the cursor, for old school style name input :P
@@ -206,25 +307,7 @@
             int hiScore = score;
 
             //adding the current letters and score to the scoreboard
-            scoreboard[hiScore] = currentLetterCombination;
-
-            //displaying the score in the UI
-            int scoreUIwidthDisplay = 30;
-            int scoreUIheightDisplay = 19;
-
-            //this one is for increasing the height of the cursor and the numeration of the top 9 scorers
-            int increaserAndDisplayer = 1;
-
-
-            //this is for displaying the current ladder of the highest score users,
-            //it should be used in the PLAYFIELD_UI
-            foreach (var kvp in scoreboard.OrderByDescending(x => x.Key).Take(9))
-            {
-                Console.SetCursorPosition(scoreUIwidthDisplay, scoreUIheightDisplay + increaserAndDisplayer);
-                Console.Write($"{increaserAndDisplayer} {kvp.Value} - {kvp.Key}");
-                increaserAndDisplayer++;
-            }
+            leaderboard[hiScore] = currentLetterCombination;
         }
-
     }
 }
