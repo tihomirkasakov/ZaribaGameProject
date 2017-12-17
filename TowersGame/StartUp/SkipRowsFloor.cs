@@ -61,25 +61,26 @@
                         for (int j = 0; j < PLAYFIELD_WIDTH - 1; j++)
                         {
                             SkipElements[SkipRowsFloor.startingRow + i, j] = SkipElements[SkipRowsFloor.startingRow + i - 1, j];
-                            SkipElements[SkipRowsFloor.startingRow, j] = 0;
+                            SkipElements[SkipRowsFloor.startingRow + i - 1, j] = 0;
                         }
                         SkipRowDrawFloor();
-                        Thread.Sleep(200);
+                        Thread.Sleep(100);
+                        SkipRowDeleteFloor();
                     }
 
 
                     //check for right place
-                    //for (int i = PLAYFIELD_HEIGHT - 1; i >= PLAYFIELD_HEIGHT - 2 - currentRow-skipRows; i--)
-                    //{
-                    //    for (int j = 0; j < PLAYFIELD_WIDTH; j++)
-                    //    {
-                    //        if ((SkipElements[i - 1-skipRows, j] == SkipElements[i, j] && SkipElements[i - 1-skipRows, j] == 1) ||
-                    //            ((SkipElements[i - 1-skipRows, j] == SkipElements[i, j] - 1 && SkipElements[i - 1-skipRows, j] == 1)))
-                    //        {
-                    //            SkipElements[i - 1, j] = 1;
-                    //        }
-                    //    }
-                    //}
+                    for (int i = PLAYFIELD_HEIGHT - 1; i >= PLAYFIELD_HEIGHT - 2 - currentRow; i--)
+                    {
+                        for (int j = 0; j < PLAYFIELD_WIDTH; j++)
+                        {
+                            if ((SkipElements[i - 1, j] != SkipElements[i, j] && SkipElements[i - 1, j] == 1) &&
+                                ((SkipElements[i - 1, j] != SkipElements[i, j] - 1 && SkipElements[i - 1, j] == 1)))
+                            {
+                                SkipElements[i - 1, j] = 0;
+                            }
+                        }
+                    }
 
                     //check lenght for next floor
                     for (int i = 0; i < PLAYFIELD_WIDTH; i++)
