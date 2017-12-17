@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Speech.Synthesis;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using static Floor;
     using static RandomMoveFloor;
+    using static SkipRowsFloor;
 
     public class StartUp
     {
@@ -111,6 +113,29 @@
                     drawUI.UpdateUI(score, difficulty);
                 }
 
+                while (!isGameOver && difficulty == Difficulty.Toooower)
+                {
+                    if (loadLevel)
+                    {
+                        LoadLevel(SkipElements);
+                        loadLevel = false;
+                    }
+
+                    SkipRowInputHandler();
+                    if (keyPressed)
+                    {
+                        SkipRowGenerateFloor();
+                        keyPressed = false;
+                    }
+                    SkipRowMoveFloor();
+                    SkipRowDrawFloor();
+
+                    Thread.Sleep(40);
+
+                    SkipRowDeleteFloor();
+                    drawUI.UpdateUI(score, difficulty);
+                }
+
                 GameOverScreen();
 
                 //this is if you want to pause the game after inputing score letters:
@@ -183,7 +208,17 @@
                 Console.SetCursorPosition(startDisplayingWidth, startDisplayingHeight + i);
                 Console.Write(introTower[i]);
             }
-            Thread.Sleep(5000);
+
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+
+            // Configure the audio output. 
+            synth.SetOutputToDefaultAudioDevice();
+
+            // Speak a string.
+            synth.Speak("Team 6 to the game presents");
+            synth.Speak("TOWER");
+
+            Thread.Sleep(3000);
             Console.Clear();
         }
 
@@ -321,6 +356,14 @@
                             }
                             break;
                         case Difficulty.Toooower:
+                            if (int.Parse(input[row][symbol].ToString()) != 0)
+                            {
+                                SkipElements[row, symbol] = int.Parse(input[row][symbol].ToString());
+                            }
+                            else
+                            {
+                                SkipElements[row, symbol] = 0;
+                            }
                             break;
                     }
                 }

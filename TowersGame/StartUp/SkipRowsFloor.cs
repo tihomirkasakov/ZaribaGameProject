@@ -4,25 +4,24 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     using static StartUp;
 
-    public class RandomMoveFloor
+    public class SkipRowsFloor
     {
-        public static int[,] RandomElements = new int[PLAYFIELD_HEIGHT, PLAYFIELD_WIDTH];
+        public static int[,] SkipElements = new int[PLAYFIELD_HEIGHT, PLAYFIELD_WIDTH];
 
         public static bool moveLeft = true;
         public static Random rng = new Random();
-        public static int currentRow = 1;
         public static int startingRow;
-        public static bool changeDirection = false;
+        public static int skipRows = 5;
 
-        public RandomMoveFloor()
+        public SkipRowsFloor()
         {
-
         }
 
-        public static void RandomInputHandler()
+        public static void SkipRowInputHandler()
         {
             if (Console.KeyAvailable)
             {
@@ -52,29 +51,40 @@
                         {
                             for (int j = 0; j < PLAYFIELD_WIDTH; j++)
                             {
-                                RandomElements[i, j] = RandomElements[i - 1, j];
+                                SkipElements[i, j] = SkipElements[i - 1, j];
                             }
                         }
-
                     }
+
+                    for (int i = 1; i <= skipRows; i++)
+                    {
+                        for (int j = 0; j < PLAYFIELD_WIDTH - 1; j++)
+                        {
+                            SkipElements[SkipRowsFloor.startingRow + i, j] = SkipElements[SkipRowsFloor.startingRow + i - 1, j];
+                            SkipElements[SkipRowsFloor.startingRow, j] = 0;
+                        }
+                        SkipRowDrawFloor();
+                        Thread.Sleep(200);
+                    }
+
 
                     //check for right place
-                    for (int i = PLAYFIELD_HEIGHT - 1; i >= PLAYFIELD_HEIGHT - 2 - currentRow; i--)
-                    {
-                        for (int j = 0; j < PLAYFIELD_WIDTH; j++)
-                        {
-                            if ((RandomElements[i - 1, j] != RandomElements[i, j] && RandomElements[i - 1, j] == 1) &&
-                                ((RandomElements[i - 1, j] != RandomElements[i, j] - 1 && RandomElements[i - 1, j] == 1)))
-                            {
-                                RandomElements[i - 1, j] = 0;
-                            }
-                        }
-                    }
+                    //for (int i = PLAYFIELD_HEIGHT - 1; i >= PLAYFIELD_HEIGHT - 2 - currentRow-skipRows; i--)
+                    //{
+                    //    for (int j = 0; j < PLAYFIELD_WIDTH; j++)
+                    //    {
+                    //        if ((SkipElements[i - 1-skipRows, j] == SkipElements[i, j] && SkipElements[i - 1-skipRows, j] == 1) ||
+                    //            ((SkipElements[i - 1-skipRows, j] == SkipElements[i, j] - 1 && SkipElements[i - 1-skipRows, j] == 1)))
+                    //        {
+                    //            SkipElements[i - 1, j] = 1;
+                    //        }
+                    //    }
+                    //}
 
                     //check lenght for next floor
                     for (int i = 0; i < PLAYFIELD_WIDTH; i++)
                     {
-                        if (RandomElements[PLAYFIELD_HEIGHT - 1 - currentRow, i] == 1)
+                        if (SkipElements[PLAYFIELD_HEIGHT - 1 - currentRow, i] == 1)
                         {
                             currentLenght++;
                         }
@@ -93,101 +103,93 @@
             }
         }
 
-        public static void RandomMoveGenerateFloor()
+        public static void SkipRowGenerateFloor()
         {
-            startingRow = PLAYFIELD_HEIGHT - 2 - currentRow;
+            startingRow = PLAYFIELD_HEIGHT - 2 - currentRow-skipRows;
             int startingPosition = rng.Next(1, PLAYFIELD_WIDTH - floorElementsLenght - 1);
+
+            for (int i = 0; i < PLAYFIELD_WIDTH-1; i++)
+            {
+                SkipElements[startingRow, i] = 0;
+            }
 
             for (int i = startingPosition; i < startingPosition + floorElementsLenght; i++)
             {
-                RandomElements[startingRow, i] = 1;
+                SkipElements[startingRow, i] = 1;
             }
         }
 
-        public static void RandomMoveMoveFloor()
+        public static void SkipRowMoveFloor()
         {
-            int moveDirection = rng.Next(0, 50);
-            if (moveDirection == 2 && moveLeft && RandomElements[startingRow,0]==0)
-            {
-                moveLeft = false;
-            }
-            else if (moveDirection == 14 && !moveLeft && RandomElements[startingRow, PLAYFIELD_WIDTH-1] == 0)
-            {
-                moveLeft = true;
-            }
-
             if (moveLeft)
             {
-
-                if (RandomElements[startingRow, 0] == 0)
+                if (SkipElements[startingRow, 0] == 0)
                 {
 
                     for (int i = 0; i < PLAYFIELD_WIDTH - 1; i++)
                     {
 
-                        if (RandomElements[startingRow, i + 1] == 1)
+                        if (SkipElements[startingRow, i + 1] == 1)
                         {
-                            RandomElements[startingRow, i] = 1;
+                            SkipElements[startingRow, i] = 1;
                         }
                         else
                         {
-                            RandomElements[startingRow, i] = 0;
+                            SkipElements[startingRow, i] = 0;
                         }
                     }
                 }
                 else
                 {
                     moveLeft = false;
-                    RandomElements[startingRow, 0] = 0;
-                    RandomElements[startingRow, floorElementsLenght] = 1;
+                    SkipElements[startingRow, 0] = 0;
+                    SkipElements[startingRow, floorElementsLenght] = 1;
                 }
             }
 
             else
             {
-                if (RandomElements[startingRow, PLAYFIELD_WIDTH - 1] == 0)
+                if (SkipElements[startingRow, PLAYFIELD_WIDTH - 1] == 0)
                 {
-
                     for (int i = PLAYFIELD_WIDTH - 1; i > 0; i--)
                     {
                         if (i == 1)
                         {
-                            RandomElements[startingRow, 0] = 0;
+                            SkipElements[startingRow, 0] = 0;
                         }
-                        if (RandomElements[startingRow, i - 1] == 1)
+                        if (SkipElements[startingRow, i - 1] == 1)
                         {
-                            RandomElements[startingRow, i] = 1;
+                            SkipElements[startingRow, i] = 1;
                         }
                         else
                         {
-                            RandomElements[startingRow, i] = 0;
+                            SkipElements[startingRow, i] = 0;
                         }
                     }
                 }
                 else
                 {
                     moveLeft = true;
-                    RandomElements[startingRow, PLAYFIELD_WIDTH - 1] = 0;
-                    RandomElements[startingRow, PLAYFIELD_WIDTH - floorElementsLenght - 1] = 1;
+                    SkipElements[startingRow, PLAYFIELD_WIDTH - 1] = 0;
+                    SkipElements[startingRow, PLAYFIELD_WIDTH - floorElementsLenght - 1] = 1;
                 }
             }
-            changeDirection = false;
         }
 
-        public static void RandomMoveDrawFloor()
+        public static void SkipRowDrawFloor()
         {
             for (int row = 0; row < PLAYFIELD_HEIGHT; row++)
             {
                 for (int col = 0; col < PLAYFIELD_WIDTH; col++)
                 {
-                    if (RandomElements[row, col] == 1)
+                    if (SkipElements[row, col] == 1)
                     {
                         Console.SetCursorPosition(col, row);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write('@');
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    else if (RandomElements[row, col] == 2)
+                    else if (SkipElements[row, col] == 2)
                     {
                         Console.SetCursorPosition(col, row);
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -198,18 +200,18 @@
             }
         }
 
-        public static void RandomMoveDeleteFloor()
+        public static void SkipRowDeleteFloor()
         {
             for (int row = 0; row < PLAYFIELD_HEIGHT; row++)
             {
                 for (int col = 0; col < PLAYFIELD_WIDTH; col++)
                 {
-                    if (RandomElements[row, col] == 1)
+                    if (SkipElements[row, col] == 1)
                     {
                         Console.SetCursorPosition(col, row);
                         Console.Write(' ');
                     }
-                    else if (RandomElements[row, col] == 2)
+                    else if (SkipElements[row, col] == 2)
                     {
                         Console.SetCursorPosition(col, row);
                         Console.Write(' ');
@@ -217,6 +219,5 @@
                 }
             }
         }
-
     }
 }

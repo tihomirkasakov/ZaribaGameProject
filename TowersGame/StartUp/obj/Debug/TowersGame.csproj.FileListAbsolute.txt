@@ -19,3 +19,10 @@ C:\Bullsized\Programming\ZaribaGameProject\TowersGame\StartUp\obj\Debug\TowersGa
 C:\Bullsized\Programming\ZaribaGameProject\TowersGame\StartUp\obj\Debug\TowersGame.csproj.CoreCompileInputs.cache
 C:\Bullsized\Programming\ZaribaGameProject\TowersGame\StartUp\obj\Debug\StartUp.exe
 C:\Bullsized\Programming\ZaribaGameProject\TowersGame\StartUp\obj\Debug\StartUp.pdb
+C:\Users\Tihomir\Desktop\towers\StartUp\bin\Debug\StartUp.exe.config
+C:\Users\Tihomir\Desktop\towers\StartUp\bin\Debug\StartUp.exe
+C:\Users\Tihomir\Desktop\towers\StartUp\bin\Debug\StartUp.pdb
+C:\Users\Tihomir\Desktop\towers\StartUp\obj\Debug\TowersGame.csprojResolveAssemblyReference.cache
+C:\Users\Tihomir\Desktop\towers\StartUp\obj\Debug\TowersGame.csproj.CoreCompileInputs.cache
+C:\Users\Tihomir\Desktop\towers\StartUp\obj\Debug\StartUp.exe
+C:\Users\Tihomir\Desktop\towers\StartUp\obj\Debug\StartUp.pdb
