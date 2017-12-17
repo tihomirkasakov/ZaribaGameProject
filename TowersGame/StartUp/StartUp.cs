@@ -43,6 +43,7 @@
         {
             Console.BufferHeight = Console.WindowHeight = PLAYFIELD_HEIGHT;
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
+            Console.CursorVisible = false;
 
             //fill the dictionary up with 9 scores, all names AAA
             for (int i = 1; i < 10; i++)
@@ -50,16 +51,11 @@
                 leaderboard[i] = "AAA";
             }
 
-<<<<<<< HEAD
             //adding the home screen that displays a tower, team name and it's on thread sleep 5000 for viewing
             IntroScreen();
 
-            ChooseDifficultyScreen();
-=======
             while (rerun)
             {
->>>>>>> f9b1326eef4281f76541073332137e09324e1797
-
                 Console.CursorVisible = false;
                 Console.Clear();
                 ChooseDifficultyScreen();
@@ -116,7 +112,9 @@
                 }
 
                 GameOverScreen();
-                Thread.Sleep(10000);
+
+                //this is if you want to pause the game after inputing score letters:
+                //Thread.Sleep(10000);
 
                 currentRow = 1;
                 floorElementsLenght = 10;
@@ -131,7 +129,7 @@
         //team 6 in it and it is built from the bottom to the top slowly, so that it creates kind
         //of a 'intro' feeling. after that the thread sleep is set to 5000, you can lower it if you
         //don't wish to wait that much.
-        private static void IntroScreen()
+        public static void IntroScreen()
         {
             string[] introTower = new string[]
             {
@@ -191,7 +189,7 @@
 
         //simple method about creating the difficulty screen, with positioning of the words, selecting
         //and displaying
-        private static void ChooseDifficultyScreen()
+        public static void ChooseDifficultyScreen()
         {
             int displayDifficultyWidth = 10;
             int displayDifficultyHeight = 20;
