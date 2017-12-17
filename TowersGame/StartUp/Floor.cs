@@ -168,6 +168,9 @@
                     floorElementsLenght = currentLenght;
                     score += currentLenght;
 
+                    //increase the number of floors amassed for the UI
+                    floorsCount++;
+
                     if (currentLenght==0)
                     {
                         isGameOver = true;

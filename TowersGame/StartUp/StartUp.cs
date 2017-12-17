@@ -26,6 +26,8 @@
         public static bool rerun = true;
         public static bool loadLevel = true;
 
+        public static int floorsCount = 0;
+
         public enum Difficulty
         {
             Tower,
@@ -87,7 +89,7 @@
                     Thread.Sleep(40);
 
                     DeleteFloor();
-                    drawUI.UpdateUI(score, difficulty);
+                    drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
                 while (!isGameOver && difficulty == Difficulty.Owert)
@@ -110,7 +112,7 @@
                     Thread.Sleep(40);
 
                     RandomMoveDeleteFloor();
-                    drawUI.UpdateUI(score, difficulty);
+                    drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
                 while (!isGameOver && difficulty == Difficulty.Toooower)
@@ -133,7 +135,7 @@
                     Thread.Sleep(40);
 
                     SkipRowDeleteFloor();
-                    drawUI.UpdateUI(score, difficulty);
+                    drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
                 GameOverScreen();
@@ -226,6 +228,65 @@
         //and displaying
         public static void ChooseDifficultyScreen()
         {
+            string[] frame = new string[]
+            {
+                "     ___     ___     ___     ___     ___     ",
+                " ___/   \\___/   \\___/   \\___/   \\___/   \\___ ",
+                "/   \\___/   \\___/   \\___/   \\___/   \\___/   \\",
+                "\\___/   \\___/   \\___/   \\___/   \\___/   \\___/",
+                "/   \\___/                           \\___/   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\                                   /   \\",
+                "\\___/                                   \\___/",
+                "/   \\___                             ___/   \\",
+                "\\___/   \\___     ___     ___     ___/   \\___/",
+                "/   \\___/   \\___/   \\___/   \\___/   \\___/   \\",
+                "\\___/   \\___/   \\___/   \\___/   \\___/   \\___/",
+                "    \\___/   \\___/   \\___/   \\___/   \\___/    ",
+            };
+
+            for (int i = 0; i < frame.Length; i++)
+            {
+                Console.SetCursorPosition(1, i);
+                Console.WriteLine(frame[i]);
+            }
+
             int displayDifficultyWidth = 10;
             int displayDifficultyHeight = 20;
 

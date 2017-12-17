@@ -55,13 +55,13 @@
             "|    Score:    |",
             "|              |",
             "|              |",
+            "|   Floors:    |",
+            "|              |",
+            "|              |",
             "|  Difficulty: |",
             "|              |",
             "|              |",
-            "|              |",
             "| Leaderboard: |",
-            "|              |",
-            "|              |",
             "|              |",
             "|              |",
             "|              |",
@@ -87,7 +87,7 @@
 
             //displaying the score in the UI
             int scoreUIwidthDisplay = PLAYFIELD_WIDTH + 4;
-            int scoreUIheightDisplay = 36;
+            int scoreUIheightDisplay = 38;
 
             //this one is for increasing the height of the cursor and the numeration of the top 9 scorers
             int increaserAndDisplayer = 1;
@@ -102,16 +102,21 @@
             }
         }
 
-        public void UpdateUI(int score, Difficulty difficulty)
+        public void UpdateUI(int score, int floors, Difficulty difficulty)
         {
             // 9 is used to adjust the position of the score - width
             // 30 is used to adjust the position of the score - height
             Console.SetCursorPosition(PLAYFIELD_WIDTH + 8, 30);
             Console.Write(score);
 
+            // 9 is used to adjust the position of the score - width
+            // 30 is used to adjust the position of the score - height
+            Console.SetCursorPosition(PLAYFIELD_WIDTH + 8, 33);
+            Console.Write(floors);
+
             // 8 is used to adjust the position of the difficulty - width
             // 34 is used to adjust the position of the difficulty - height
-            Console.SetCursorPosition(PLAYFIELD_WIDTH + 7, 33);
+            Console.SetCursorPosition(PLAYFIELD_WIDTH + 7, 36);
             Console.Write(difficulty);
         }
 
