@@ -8,6 +8,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using static Floor;
+    using static RandomMoveFloor;
 
     public class StartUp
     {
@@ -15,16 +16,19 @@
         public const int PLAYFIELD_WIDTH = 30;
         public const int PLAYFIELD_UI = 17;
 
+        public static int currentRow = 1;
         public static int floorElementsLenght = 10;
         public static bool isGameOver = false;
         public static bool keyPressed = true;
         public static int score = 0;
+        public static bool rerun = true;
+        public static bool loadLevel = true;
 
         public enum Difficulty
         {
-            Easy,
-            Medium,
-            Hard
+            Tower,
+            Owert,
+            Toooower
         }
 
         public static Difficulty difficulty;
@@ -39,7 +43,6 @@
         {
             Console.BufferHeight = Console.WindowHeight = PLAYFIELD_HEIGHT;
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
-            Console.CursorVisible = false;
 
             //fill the dictionary up with 9 scores, all names AAA
             for (int i = 1; i < 10; i++)
@@ -47,35 +50,81 @@
                 leaderboard[i] = "AAA";
             }
 
+<<<<<<< HEAD
             //adding the home screen that displays a tower, team name and it's on thread sleep 5000 for viewing
             IntroScreen();
 
             ChooseDifficultyScreen();
-
-            UI drawUI = new UI();
-            LoadLevel(Elements);
-
-            //there is no need to put the Draw method in the while cycle, just update it
-            drawUI.Draw(score, leaderboard, difficulty);
-
-            while (!isGameOver)
+=======
+            while (rerun)
             {
-                InputHandler();
-                if (keyPressed)
+>>>>>>> f9b1326eef4281f76541073332137e09324e1797
+
+                Console.CursorVisible = false;
+                Console.Clear();
+                ChooseDifficultyScreen();
+
+                UI drawUI = new UI();
+
+                //there is no need to put the Draw method in the while cycle, just update it
+                drawUI.Draw(score, leaderboard, difficulty);
+
+                while (!isGameOver && difficulty == Difficulty.Tower)
                 {
-                    GenerateFloor();
-                    keyPressed = false;
+                    if (loadLevel)
+                    {
+                        LoadLevel(Elements);
+                        loadLevel = false;
+                    }
+
+                    InputHandler();
+                    if (keyPressed)
+                    {
+                        GenerateFloor();
+                        keyPressed = false;
+                    }
+                    MoveFloor();
+                    DrawFloor();
+
+                    Thread.Sleep(40);
+
+                    DeleteFloor();
+                    drawUI.UpdateUI(score, difficulty);
                 }
-                MoveFloor();
-                DrawFloor();
 
-                Thread.Sleep(40);
+                while (!isGameOver && difficulty == Difficulty.Owert)
+                {
+                    if (loadLevel)
+                    {
+                        LoadLevel(RandomElements);
+                        loadLevel = false;
+                    }
 
-                DeleteFloor();
-                drawUI.UpdateUI(score, difficulty);
+                    RandomInputHandler();
+                    if (keyPressed)
+                    {
+                        RandomMoveGenerateFloor();
+                        keyPressed = false;
+                    }
+                    RandomMoveMoveFloor();
+                    RandomMoveDrawFloor();
+
+                    Thread.Sleep(40);
+
+                    RandomMoveDeleteFloor();
+                    drawUI.UpdateUI(score, difficulty);
+                }
+
+                GameOverScreen();
+                Thread.Sleep(10000);
+
+                currentRow = 1;
+                floorElementsLenght = 10;
+                isGameOver = false;
+                keyPressed = true;
+                score = 0;
+                loadLevel = true;
             }
-            GameOverScreen();
-            Thread.Sleep(10000);
         }
 
         //this method shows up first when you boot the game. it displays a tower sign, a tower with 
@@ -151,13 +200,13 @@
             Console.Write("Please select difficulty: ");
 
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 2);
-            Console.Write(Difficulty.Easy);
+            Console.Write(Difficulty.Tower);
 
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 3);
-            Console.Write(Difficulty.Medium);
+            Console.Write(Difficulty.Owert);
 
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 4);
-            Console.Write(Difficulty.Hard);
+            Console.Write(Difficulty.Toooower);
 
             int selectorHeight = 22;
             Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
@@ -216,15 +265,15 @@
                         Console.Clear();
                         if (selectorHeight == 22)
                         {
-                            difficulty = Difficulty.Easy;
+                            difficulty = Difficulty.Tower;
                         }
                         else if (selectorHeight == 23)
                         {
-                            difficulty = Difficulty.Medium;
+                            difficulty = Difficulty.Owert;
                         }
                         else if (selectorHeight == 24)
                         {
-                            difficulty = Difficulty.Hard;
+                            difficulty = Difficulty.Toooower;
                         }
                     }
                 }
@@ -251,13 +300,30 @@
             {
                 for (int symbol = 0; symbol < input[row].Length; symbol++)
                 {
-                    if (int.Parse(input[row][symbol].ToString()) != 0)
+                    switch (difficulty)
                     {
-                        Elements[row, symbol] = int.Parse(input[row][symbol].ToString());
-                    }
-                    else
-                    {
-                        Elements[row, symbol] = 0;
+                        case Difficulty.Tower:
+                            if (int.Parse(input[row][symbol].ToString()) != 0)
+                            {
+                                Elements[row, symbol] = int.Parse(input[row][symbol].ToString());
+                            }
+                            else
+                            {
+                                Elements[row, symbol] = 0;
+                            }
+                            break;
+                        case Difficulty.Owert:
+                            if (int.Parse(input[row][symbol].ToString()) != 0)
+                            {
+                                RandomElements[row, symbol] = int.Parse(input[row][symbol].ToString());
+                            }
+                            else
+                            {
+                                RandomElements[row, symbol] = 0;
+                            }
+                            break;
+                        case Difficulty.Toooower:
+                            break;
                     }
                 }
             }
