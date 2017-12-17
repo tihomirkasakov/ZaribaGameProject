@@ -106,20 +106,17 @@
 
         public static void RandomMoveMoveFloor()
         {
-            if (RandomElements[startingRow, 0] == 0 || RandomElements[startingRow, PLAYFIELD_WIDTH - 1] == 0)
+            //-----fix mode glitch
+            int moveDirection = rng.Next(0, 50);
+            if (moveDirection == 2 && moveLeft && RandomElements[startingRow, 0] == 0)
             {
-                int moveDirection = rng.Next(0, 2);
-                if (moveDirection == 0 && !changeDirection)
-                {
-                    moveLeft = true;
-                    changeDirection = true;
-                }
-                else if (moveDirection==1 && !changeDirection)
-                {
-                    moveLeft = false;
-                    changeDirection = true;
-                }
+                moveLeft = false;
             }
+            else if (moveDirection == 14 && !moveLeft && RandomElements[startingRow, PLAYFIELD_WIDTH - 1] == 0)
+            {
+                moveLeft = true;
+            }
+            ///
 
             if (moveLeft)
             {
