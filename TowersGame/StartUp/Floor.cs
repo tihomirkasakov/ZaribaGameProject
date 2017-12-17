@@ -13,7 +13,6 @@
 
         public static bool moveLeft = true;
         public static Random rng = new Random();
-        public static int currentRow = 1;
         public static int startingRow;
 
         public Floor()
