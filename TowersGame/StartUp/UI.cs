@@ -84,8 +84,6 @@
 
             // 9 is used to adjust the position of the score - width
             // 30 is used to adjust the position of the score - height
-            // Console.SetCursorPosition(PLAYFIELD_WIDTH + 9, 30);
-            // Console.Write(score);
 
             //displaying the score in the UI
             int scoreUIwidthDisplay = PLAYFIELD_WIDTH + 4;

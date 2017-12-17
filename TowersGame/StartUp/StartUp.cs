@@ -47,6 +47,9 @@
                 leaderboard[i] = "AAA";
             }
 
+            //adding the home screen that displays a tower, team name and it's on thread sleep 5000 for viewing
+            IntroScreen();
+
             ChooseDifficultyScreen();
 
             UI drawUI = new UI();
@@ -75,6 +78,70 @@
             Thread.Sleep(10000);
         }
 
+        //this method shows up first when you boot the game. it displays a tower sign, a tower with 
+        //team 6 in it and it is built from the bottom to the top slowly, so that it creates kind
+        //of a 'intro' feeling. after that the thread sleep is set to 5000, you can lower it if you
+        //don't wish to wait that much.
+        private static void IntroScreen()
+        {
+            string[] introTower = new string[]
+            {
+                "                   *                       ",
+                "                   :                       ",
+                "                   |                       ",
+                "                   |                       ",
+                "                   |                       ",
+                "                  :|:                      ",
+                "                  |||                      ",
+                "             _____|||_____                 ",
+                "            /=============\\               ",
+                "        ---<~~~~~~~~~~~~~~~>---            ",
+                "            \\-------------/               ",
+                "             \\___________/                ",
+                "               \\||:::||/                  ",
+                "                ||:::||                    ",
+                "                ||:::||                    ",
+                "                ||:::||                    ",
+                "                ||ooo||                    ",
+                "                ||___||                    ",
+                "                ||:::||                    ",
+                "                ||:::||                    ",
+                "                ||:::||                    ",
+                "                ||:::||                    ",
+                "                ||:::||                    ",
+                "               /||:::||\\                  ",
+                "              / ||:::|| \\                 ",
+                "             /  ||:::||  \\                ",
+                "            /   ||:::||   \\               ",
+                "        ___/____||:::||____\\____          ",
+                "       /~~~~~~~~ TEAM 6 ~~~~~~~~\\         ",
+                "      /   |~~~~~~~~|  _____      \\        ",
+                "      |   |________| |  |  |     |          ",
+                "______|______________|__|__|_____|_________",
+                "                                             ",
+                "     _____ _____  _    _ ___________  ",
+                "    |_   _|  _  || |  | |  ___| ___ \\ ",
+                "      | | | | | || |  | | |__ | |_/ / ",
+                "      | | | | | || |/\\| |  __||    /  ",
+                "      | | \\ \\_/ /\\  /\\  / |___| |\\ \\  ",
+                "      \\_/  \\___/  \\/  \\/\\____/\\_| \\_| ",
+            };
+
+            int startDisplayingWidth = 3;
+            int startDisplayingHeight = 5;
+
+            for (int i = introTower.Length - 1; i >= 0; i--)
+            {
+                Thread.Sleep(50);
+                Console.SetCursorPosition(startDisplayingWidth, startDisplayingHeight + i);
+                Console.Write(introTower[i]);
+            }
+            Thread.Sleep(5000);
+            Console.Clear();
+        }
+
+        //simple method about creating the difficulty screen, with positioning of the words, selecting
+        //and displaying
         private static void ChooseDifficultyScreen()
         {
             int displayDifficultyWidth = 10;
@@ -198,6 +265,34 @@
 
         private static void GameOverScreen()
         {
+            //clear the screen to display the game over screen
+            Console.Clear();
+
+            //fill array with logo
+            string[] buildingDisplay = new string[]
+            {
+                "   _________    __  _________",
+                "  / ____/   |  /  |/  / ____/",
+                " / / __/ /| | / /|_/ / __/   ",
+                "/ /_/ / ___ |/ /  / / /___   ",
+                "\\____/_/  |_/_/  /_/_____/  ",
+                "                             ",
+                "   ____ _    ____________    ",
+                "  / __ \\ |  / / ____/ __ \\ ",
+                " / / / / | / / __/ / /_/ /   ",
+                "/ /_/ /| |/ / /___/ _, _/    ",
+                "\\____/ |___/_____/_/ |_|    ",
+            };
+
+            int gameOverWidth = 8;
+            int gameOverHeight = 5;
+
+            for (int i = 0; i < buildingDisplay.Length; i++)
+            {
+                Console.SetCursorPosition(gameOverWidth, gameOverHeight + i);
+                Console.WriteLine(buildingDisplay[i]);
+            }
+
             //alphabet letters:
             int alphabetLettersCount = 26;
 
@@ -217,12 +312,9 @@
             //and we need a string to keep the current combination of letters
             string currentLetterCombination = string.Empty;
 
-            //clear the screen to display the game over screen
-            Console.Clear();
-
             //placing the cursor in the middle of the field
             int widthMessageDisplay = 0;
-            int heightMessageDisplay = 16;
+            int heightMessageDisplay = 18;
             Console.SetCursorPosition(widthMessageDisplay, heightMessageDisplay);
 
             //asking the user to input his name:
@@ -241,7 +333,7 @@
             int currentLetter = 0;
 
             //display the first letter
-            Console.Write(alphabet[currentLetter]); //maybe zero should be an int?
+            Console.Write(alphabet[currentLetter]);
 
             //we need three letters, so counter again from 0
             int letterCounter = 0;
