@@ -15,16 +15,25 @@
     public class StartUp
     {
         public const int PLAYFIELD_HEIGHT = 50;
+
         public const int PLAYFIELD_WIDTH = 30;
+
         public const int PLAYFIELD_UI = 17;
 
         public static int currentRow = 1;
+
         public static int floorElementsLenght = 10;
+
         public static bool isGameOver = false;
+
         public static bool keyPressed = true;
+
         public static int score = 0;
+
         public static bool rerun = true;
+
         public static bool loadLevel = true;
+
         public static int difficultySpeed = 100;
 
         public static int floorsCount = 0;
@@ -50,13 +59,19 @@
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
             Console.CursorVisible = false;
 
-            //fill the dictionary up with 9 scores, all names AAA
-            for (int i = 1; i < 10; i++)
+            //this reads the \bin\Debug\leaderboard.txt, so that we can keep previous scores
+            string[][] lines = File.ReadAllLines(@"leaderboard.txt")
+                .Select(s => s.Split(' '))
+                .ToArray();
+
+            //this fills the dictionary that we have with the scores from the txt file
+            for (int i = 0; i < lines.Length; i++)
             {
-                leaderboard[i] = "AAA";
+                leaderboard[int.Parse(lines[i][0])] = lines[i][1];
             }
 
             //adding the home screen that displays a tower, team name and it's on thread sleep 5000 for viewing
+            //oh, and also - sound :P
             IntroScreen();
 
             while (rerun)
@@ -79,6 +94,7 @@
                     }
 
                     InputHandler();
+
                     if (keyPressed)
                     {
                         GenerateFloor();
@@ -95,11 +111,13 @@
                     }
 
                     MoveFloor();
+
                     DrawFloor();
 
                     Thread.Sleep(difficultySpeed);
 
                     DeleteFloor();
+
                     drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
@@ -112,6 +130,7 @@
                     }
 
                     RandomInputHandler();
+
                     if (keyPressed)
                     {
                         RandomMoveGenerateFloor();
@@ -128,11 +147,13 @@
                     }
 
                     RandomMoveMoveFloor();
+
                     RandomMoveDrawFloor();
 
                     Thread.Sleep(difficultySpeed);
 
                     RandomMoveDeleteFloor();
+
                     drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
@@ -145,6 +166,7 @@
                     }
 
                     SkipRowInputHandler();
+
                     if (keyPressed)
                     {
                         SkipRowGenerateFloor();
@@ -161,19 +183,17 @@
                     }
 
                     SkipRowMoveFloor();
+
                     SkipRowDrawFloor();
 
                     Thread.Sleep(difficultySpeed);
 
                     SkipRowDeleteFloor();
+
                     drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
                 GameOverScreen();
-
-                //this is if you want to pause the game after inputing score letters:
-                //Thread.Sleep(10000);
-
                 currentRow = 1;
                 floorElementsLenght = 10;
                 isGameOver = false;
@@ -185,7 +205,7 @@
 
         //this method shows up first when you boot the game. it displays a tower sign, a tower with 
         //team 6 in it and it is built from the bottom to the top slowly, so that it creates kind
-        //of a 'intro' feeling. after that the thread sleep is set to 5000, you can lower it if you
+        //of a 'intro' feeling. after that the thread sleep is set to 2000, you can lower it if you
         //don't wish to wait that much.
         public static void IntroScreen()
         {
@@ -324,6 +344,8 @@
             Console.SetCursorPosition(displayDifficultyWidth, displayDifficultyHeight);
             Console.Write("Please select difficulty: ");
 
+            //it is absurd to write every new width and height as a separate integer,
+            //that's why I adjust them by hand, so a lot of pluses to follow:
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 2);
             Console.Write(Difficulty.Swing);
 
@@ -599,6 +621,9 @@
 
             //adding the current letters and score to the scoreboard
             leaderboard[hiScore] = currentLetterCombination;
+
+            //exporting the current result set to the txt file
+            File.WriteAllLines("leaderboard.txt", leaderboard.Select(x => x.Key + " " + x.Value).ToArray());
         }
     }
 }

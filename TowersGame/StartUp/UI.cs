@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using static StartUp;
 
     public class UI
@@ -82,9 +80,6 @@
                 Console.Write(theWholeUI[i]);
             }
 
-            // 9 is used to adjust the position of the score - width
-            // 30 is used to adjust the position of the score - height
-
             //displaying the score in the UI
             int scoreUIwidthDisplay = PLAYFIELD_WIDTH + 4;
             int scoreUIheightDisplay = 38;
@@ -104,18 +99,18 @@
 
         public void UpdateUI(int score, int floors, Difficulty difficulty)
         {
-            // 9 is used to adjust the position of the score - width
+            // 8 is used to adjust the position of the score - width
             // 30 is used to adjust the position of the score - height
             Console.SetCursorPosition(PLAYFIELD_WIDTH + 8, 30);
             Console.Write(score);
 
-            // 9 is used to adjust the position of the score - width
-            // 30 is used to adjust the position of the score - height
+            // 8 is used to adjust the position of the score - width
+            // 33 is used to adjust the position of the score - height
             Console.SetCursorPosition(PLAYFIELD_WIDTH + 8, 33);
             Console.Write(floors);
 
-            // 8 is used to adjust the position of the difficulty - width
-            // 34 is used to adjust the position of the difficulty - height
+            // 7 is used to adjust the position of the difficulty - width
+            // 36 is used to adjust the position of the difficulty - height
             Console.SetCursorPosition(PLAYFIELD_WIDTH + 7, 36);
             Console.Write(difficulty);
         }
