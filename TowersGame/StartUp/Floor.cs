@@ -167,7 +167,7 @@
                     if (Elements[row, col] == 1)
                     {
                         Console.SetCursorPosition(col, row);
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write('\uFDFC');
                         Console.ForegroundColor = ConsoleColor.White;
                     }

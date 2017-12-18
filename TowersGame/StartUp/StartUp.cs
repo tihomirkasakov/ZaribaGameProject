@@ -61,14 +61,14 @@
             Console.OutputEncoding = Encoding.UTF8;
 
             //this reads the \bin\Debug\leaderboard.txt, so that we can keep previous scores
-            string[][] lines = File.ReadAllLines(@"leaderboard.txt")
+            string[][] swingLines = File.ReadAllLines(@"swing.txt")
                 .Select(s => s.Split(' '))
                 .ToArray();
 
             //this fills the dictionary that we have with the scores from the txt file
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < swingLines.Length; i++)
             {
-                leaderboard[int.Parse(lines[i][0])] = lines[i][1];
+                leaderboard[int.Parse(swingLines[i][0])] = swingLines[i][1];
             }
 
             //adding the home screen that displays a tower, team name and it's on thread sleep 5000 for viewing
@@ -102,11 +102,11 @@
                         keyPressed = false;
                     }
 
-                    if (floorsCount==10)
+                    if (floorsCount == 10)
                     {
                         difficultySpeed = 70;
                     }
-                    else if (floorsCount==20)
+                    else if (floorsCount == 20)
                     {
                         difficultySpeed = 30;
                     }
@@ -201,6 +201,7 @@
                 keyPressed = true;
                 score = 0;
                 loadLevel = true;
+                floorsCount = 0;
             }
         }
 
@@ -624,7 +625,7 @@
             leaderboard[hiScore] = currentLetterCombination;
 
             //exporting the current result set to the txt file
-            File.WriteAllLines("leaderboard.txt", leaderboard.Select(x => x.Key + " " + x.Value).ToArray());
+            File.WriteAllLines("swing.txt", leaderboard.Select(x => x.Key + " " + x.Value).ToArray());
         }
     }
 }
