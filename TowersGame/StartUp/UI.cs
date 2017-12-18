@@ -87,13 +87,40 @@
             //this one is for increasing the height of the cursor and the numeration of the top 9 scorers
             int increaserAndDisplayer = 1;
 
-            //this is for displaying the current ladder of the highest score users,
-            //it should be used in the PLAYFIELD_UI
-            foreach (var kvp in leaderboard.OrderByDescending(x => x.Key).Take(9))
+            if (difficulty == Difficulty.Swing)
             {
-                Console.SetCursorPosition(scoreUIwidthDisplay, scoreUIheightDisplay + increaserAndDisplayer);
-                Console.Write($"{increaserAndDisplayer}. {kvp.Value} - {kvp.Key}");
-                increaserAndDisplayer++;
+                //this is for displaying the current ladder of the highest score users,
+                //it should be used in the PLAYFIELD_UI
+                foreach (var kvp in swingLeaderBoard.OrderByDescending(x => x.Key).Take(9))
+                {
+                    Console.SetCursorPosition(scoreUIwidthDisplay, scoreUIheightDisplay + increaserAndDisplayer);
+                    Console.Write($"{increaserAndDisplayer}. {kvp.Value} - {kvp.Key}");
+                    increaserAndDisplayer++;
+                }
+            }
+
+            else if (difficulty == Difficulty.Glitch)
+            {
+                //this is for displaying the current ladder of the highest score users,
+                //it should be used in the PLAYFIELD_UI
+                foreach (var kvp in glitchLeaderBoard.OrderByDescending(x => x.Key).Take(9))
+                {
+                    Console.SetCursorPosition(scoreUIwidthDisplay, scoreUIheightDisplay + increaserAndDisplayer);
+                    Console.Write($"{increaserAndDisplayer}. {kvp.Value} - {kvp.Key}");
+                    increaserAndDisplayer++;
+                }
+            }
+
+            else if (difficulty == Difficulty.Overfall)
+            {
+                //this is for displaying the current ladder of the highest score users,
+                //it should be used in the PLAYFIELD_UI
+                foreach (var kvp in overfallLeaderBoard.OrderByDescending(x => x.Key).Take(9))
+                {
+                    Console.SetCursorPosition(scoreUIwidthDisplay, scoreUIheightDisplay + increaserAndDisplayer);
+                    Console.Write($"{increaserAndDisplayer}. {kvp.Value} - {kvp.Key}");
+                    increaserAndDisplayer++;
+                }
             }
         }
 

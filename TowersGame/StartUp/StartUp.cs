@@ -7,7 +7,6 @@
     using System.Speech.Synthesis;
     using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
     using static Floor;
     using static RandomMoveFloor;
     using static SkipRowsFloor;
@@ -15,27 +14,18 @@
     public class StartUp
     {
         public const int PLAYFIELD_HEIGHT = 50;
-
         public const int PLAYFIELD_WIDTH = 30;
-
         public const int PLAYFIELD_UI = 17;
 
+        public static bool isGameOver = false;
+        public static bool rerun = true;
+        public static bool loadLevel = true;
+        public static int score = 0;
         public static int currentRow = 1;
-
         public static int floorElementsLenght = 10;
 
-        public static bool isGameOver = false;
-
         public static bool keyPressed = true;
-
-        public static int score = 0;
-
-        public static bool rerun = true;
-
-        public static bool loadLevel = true;
-
         public static int difficultySpeed = 100;
-
         public static int floorsCount = 0;
 
         public enum Difficulty
@@ -51,7 +41,9 @@
         * key      -> int, the score
         * value    -> string, the name (consisting of three letters) (for now just AAA)
         * */
-        public static Dictionary<int, string> leaderboard = new Dictionary<int, string>();
+        public static Dictionary<int, string> swingLeaderBoard = new Dictionary<int, string>();
+        public static Dictionary<int, string> glitchLeaderBoard = new Dictionary<int, string>();
+        public static Dictionary<int, string> overfallLeaderBoard = new Dictionary<int, string>();
 
         static void Main()
         {
@@ -60,7 +52,7 @@
             Console.CursorVisible = false;
             Console.OutputEncoding = Encoding.UTF8;
 
-            //this reads the \bin\Debug\leaderboard.txt, so that we can keep previous scores
+            //this reads the \bin\Debug\swing.txt, so that we can keep previous scores
             string[][] swingLines = File.ReadAllLines(@"swing.txt")
                 .Select(s => s.Split(' '))
                 .ToArray();
@@ -68,9 +60,32 @@
             //this fills the dictionary that we have with the scores from the txt file
             for (int i = 0; i < swingLines.Length; i++)
             {
-                leaderboard[int.Parse(swingLines[i][0])] = swingLines[i][1];
+                swingLeaderBoard[int.Parse(swingLines[i][0])] = swingLines[i][1];
             }
 
+
+            //this reads the \bin\Debug\glitch.txt, so that we can keep previous scores
+            string[][] glitchLines = File.ReadAllLines(@"glitch.txt")
+                .Select(s => s.Split(' '))
+                .ToArray();
+
+            //this fills the dictionary that we have with the scores from the txt file
+            for (int i = 0; i < glitchLines.Length; i++)
+            {
+                glitchLeaderBoard[int.Parse(glitchLines[i][0])] = glitchLines[i][1];
+            }
+
+
+            //this reads the \bin\Debug\overfall.txt, so that we can keep previous scores
+            string[][] overfallLines = File.ReadAllLines(@"overfall.txt")
+                .Select(s => s.Split(' '))
+                .ToArray();
+
+            //this fills the dictionary that we have with the scores from the txt file
+            for (int i = 0; i < overfallLines.Length; i++)
+            {
+                overfallLeaderBoard[int.Parse(overfallLines[i][0])] = overfallLines[i][1];
+            }
             //adding the home screen that displays a tower, team name and it's on thread sleep 5000 for viewing
             //oh, and also - sound :P
             IntroScreen();
@@ -84,7 +99,7 @@
                 UI drawUI = new UI();
 
                 //there is no need to put the Draw method in the while cycle, just update it
-                drawUI.Draw(score, leaderboard, difficulty);
+                drawUI.Draw(score, swingLeaderBoard, difficulty);
 
                 while (!isGameOver && difficulty == Difficulty.Swing)
                 {
@@ -202,6 +217,7 @@
                 score = 0;
                 loadLevel = true;
                 floorsCount = 0;
+                difficultySpeed = 100;
             }
         }
 
@@ -621,11 +637,32 @@
             //we need a score integer, for now I will just input a random score int to test it
             int hiScore = score;
 
-            //adding the current letters and score to the scoreboard
-            leaderboard[hiScore] = currentLetterCombination;
+            if (difficulty == Difficulty.Swing)
+            {
+                //adding the current letters and score to the scoreboard
+                swingLeaderBoard[hiScore] = currentLetterCombination;
 
-            //exporting the current result set to the txt file
-            File.WriteAllLines("swing.txt", leaderboard.Select(x => x.Key + " " + x.Value).ToArray());
+                //exporting the current result set to the txt file
+                File.WriteAllLines("swing.txt", swingLeaderBoard.Select(x => x.Key + " " + x.Value).ToArray());
+            }
+
+            else if (difficulty == Difficulty.Glitch)
+            {
+                //adding the current letters and score to the scoreboard
+                glitchLeaderBoard[hiScore] = currentLetterCombination;
+
+                //exporting the current result set to the txt file
+                File.WriteAllLines("glitch.txt", glitchLeaderBoard.Select(x => x.Key + " " + x.Value).ToArray());
+            }
+
+            else if (difficulty == Difficulty.Overfall)
+            {
+                //adding the current letters and score to the scoreboard
+                overfallLeaderBoard[hiScore] = currentLetterCombination;
+
+                //exporting the current result set to the txt file
+                File.WriteAllLines("overfall.txt", overfallLeaderBoard.Select(x => x.Key + " " + x.Value).ToArray());
+            }
         }
     }
 }
