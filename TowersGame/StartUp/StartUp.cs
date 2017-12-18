@@ -25,14 +25,15 @@
         public static int score = 0;
         public static bool rerun = true;
         public static bool loadLevel = true;
+        public static int difficultySpeed = 100;
 
         public static int floorsCount = 0;
 
         public enum Difficulty
         {
-            Tower,
-            Owert,
-            Toooower
+            Swing,
+            Glitch,
+            Overfall
         }
 
         public static Difficulty difficulty;
@@ -69,7 +70,7 @@
                 //there is no need to put the Draw method in the while cycle, just update it
                 drawUI.Draw(score, leaderboard, difficulty);
 
-                while (!isGameOver && difficulty == Difficulty.Tower)
+                while (!isGameOver && difficulty == Difficulty.Swing)
                 {
                     if (loadLevel)
                     {
@@ -83,16 +84,26 @@
                         GenerateFloor();
                         keyPressed = false;
                     }
+
+                    if (floorsCount==10)
+                    {
+                        difficultySpeed = 70;
+                    }
+                    else if (floorsCount==20)
+                    {
+                        difficultySpeed = 30;
+                    }
+
                     MoveFloor();
                     DrawFloor();
 
-                    Thread.Sleep(40);
+                    Thread.Sleep(difficultySpeed);
 
                     DeleteFloor();
                     drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
-                while (!isGameOver && difficulty == Difficulty.Owert)
+                while (!isGameOver && difficulty == Difficulty.Glitch)
                 {
                     if (loadLevel)
                     {
@@ -106,16 +117,26 @@
                         RandomMoveGenerateFloor();
                         keyPressed = false;
                     }
+
+                    if (floorsCount == 10)
+                    {
+                        difficultySpeed = 70;
+                    }
+                    else if (floorsCount == 20)
+                    {
+                        difficultySpeed = 30;
+                    }
+
                     RandomMoveMoveFloor();
                     RandomMoveDrawFloor();
 
-                    Thread.Sleep(40);
+                    Thread.Sleep(difficultySpeed);
 
                     RandomMoveDeleteFloor();
                     drawUI.UpdateUI(score, floorsCount, difficulty);
                 }
 
-                while (!isGameOver && difficulty == Difficulty.Toooower)
+                while (!isGameOver && difficulty == Difficulty.Overfall)
                 {
                     if (loadLevel)
                     {
@@ -129,10 +150,20 @@
                         SkipRowGenerateFloor();
                         keyPressed = false;
                     }
+
+                    if (floorsCount == 10)
+                    {
+                        difficultySpeed = 70;
+                    }
+                    else if (floorsCount == 20)
+                    {
+                        difficultySpeed = 30;
+                    }
+
                     SkipRowMoveFloor();
                     SkipRowDrawFloor();
 
-                    Thread.Sleep(40);
+                    Thread.Sleep(difficultySpeed);
 
                     SkipRowDeleteFloor();
                     drawUI.UpdateUI(score, floorsCount, difficulty);
@@ -220,7 +251,7 @@
             synth.Speak("Team 6 to the game presents");
             synth.Speak("TOWER");
 
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
             Console.Clear();
         }
 
@@ -294,13 +325,13 @@
             Console.Write("Please select difficulty: ");
 
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 2);
-            Console.Write(Difficulty.Tower);
+            Console.Write(Difficulty.Swing);
 
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 3);
-            Console.Write(Difficulty.Owert);
+            Console.Write(Difficulty.Glitch);
 
             Console.SetCursorPosition(displayDifficultyWidth + 9, displayDifficultyHeight + 4);
-            Console.Write(Difficulty.Toooower);
+            Console.Write(Difficulty.Overfall);
 
             int selectorHeight = 22;
             Console.SetCursorPosition(displayDifficultyWidth + 7, selectorHeight);
@@ -359,15 +390,15 @@
                         Console.Clear();
                         if (selectorHeight == 22)
                         {
-                            difficulty = Difficulty.Tower;
+                            difficulty = Difficulty.Swing;
                         }
                         else if (selectorHeight == 23)
                         {
-                            difficulty = Difficulty.Owert;
+                            difficulty = Difficulty.Glitch;
                         }
                         else if (selectorHeight == 24)
                         {
-                            difficulty = Difficulty.Toooower;
+                            difficulty = Difficulty.Overfall;
                         }
                     }
                 }
@@ -396,7 +427,7 @@
                 {
                     switch (difficulty)
                     {
-                        case Difficulty.Tower:
+                        case Difficulty.Swing:
                             if (int.Parse(input[row][symbol].ToString()) != 0)
                             {
                                 Elements[row, symbol] = int.Parse(input[row][symbol].ToString());
@@ -406,7 +437,7 @@
                                 Elements[row, symbol] = 0;
                             }
                             break;
-                        case Difficulty.Owert:
+                        case Difficulty.Glitch:
                             if (int.Parse(input[row][symbol].ToString()) != 0)
                             {
                                 RandomElements[row, symbol] = int.Parse(input[row][symbol].ToString());
@@ -416,7 +447,7 @@
                                 RandomElements[row, symbol] = 0;
                             }
                             break;
-                        case Difficulty.Toooower:
+                        case Difficulty.Overfall:
                             if (int.Parse(input[row][symbol].ToString()) != 0)
                             {
                                 SkipElements[row, symbol] = int.Parse(input[row][symbol].ToString());

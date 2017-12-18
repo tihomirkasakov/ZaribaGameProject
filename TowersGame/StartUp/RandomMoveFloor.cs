@@ -17,11 +17,6 @@
         public static int startingRow;
         public static bool changeDirection = false;
 
-        public RandomMoveFloor()
-        {
-
-        }
-
         public static void RandomInputHandler()
         {
             if (Console.KeyAvailable)
@@ -82,6 +77,9 @@
 
                     floorElementsLenght = currentLenght;
                     score += currentLenght;
+
+                    //increase the number of floors amassed for the UI
+                    floorsCount++;
 
                     if (currentLenght == 0)
                     {

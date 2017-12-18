@@ -17,10 +17,6 @@
         public static int startingRow;
         public static int skipRows = 5;
 
-        public SkipRowsFloor()
-        {
-        }
-
         public static void SkipRowInputHandler()
         {
             if (Console.KeyAvailable)
@@ -93,6 +89,9 @@
 
                     floorElementsLenght = currentLenght;
                     score += currentLenght;
+
+                    //increase the number of floors amassed for the UI
+                    floorsCount++;
 
                     if (currentLenght == 0)
                     {
