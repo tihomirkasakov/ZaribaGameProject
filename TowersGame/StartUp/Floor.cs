@@ -167,15 +167,15 @@
                     if (Elements[row, col] == 1)
                     {
                         Console.SetCursorPosition(col, row);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write('@');
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write('\uFDFC');
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     else if (Elements[row, col] == 2)
                     {
                         Console.SetCursorPosition(col, row);
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write('%');
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write('\uFDFC');
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                 }

@@ -58,6 +58,7 @@
             Console.BufferHeight = Console.WindowHeight = PLAYFIELD_HEIGHT;
             Console.BufferWidth = Console.WindowWidth = PLAYFIELD_WIDTH + PLAYFIELD_UI;
             Console.CursorVisible = false;
+            Console.OutputEncoding = Encoding.UTF8;
 
             //this reads the \bin\Debug\leaderboard.txt, so that we can keep previous scores
             string[][] lines = File.ReadAllLines(@"leaderboard.txt")
